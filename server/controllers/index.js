@@ -13,9 +13,6 @@ module.exports = {
 
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-      console.log("POSTTTTTT");
-      console.log("req data: "+req)
-      req.on('data',function(){console.log(data)});
     } // a function which handles posting a message to the database
   },
 
@@ -25,6 +22,7 @@ module.exports = {
     },
     post: function (req, res) {
       console.log("USERS POSTTT");
+      console.log('')
 
     }
   }

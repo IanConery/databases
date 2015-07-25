@@ -25,19 +25,45 @@ var dbNames = {
 };
 
 exports.addUser = function(user){
-  connection.query('SELECT * FROM '+dbNames.username + ' WHERE name = ?',[user],function(err, results){
+  user = connection.escape(user);
+  var sql = 'SELECT * FROM '+dbNames.username + ' WHERE name = '+user;
+  console.log("addUser sql ::: ", sql);
+  connection.query(sql,function(err, results){
     if (err) {
-      // add the user and return the user
-      console.log("ERROR: "+err);
+      console.log("ADD USER LOOKUP ERROR: "+err);
     } else {
       // return the user
-      console.log("RESULTS: "+JSON.stringify(results));
+      if (results.length === 0) {
+        var sql = 'INSERT INTO '+dbNames.username+' (name) VALUES ('+user+')';
+        connection.query(sql, function(err, data){
+          if (err) {
+            console.log("INSERT USER ERROR: ",err)
+          } else {
+            console.log("User "+user+" added");
+          }
+        })
+      } else {
+        // return exports.getUser(user);
+      }
     }
   });
   // if(connection.query('SELECT ' + user + ' FROM ' + dbNames.username))
 };
 
 // Getting all users
+
+// exports.getUser = function(user) {
+//   user = connection.escape(user);
+//   var sql = 'SELECT * FROM '+dbNames.username+'WHERE name = '+user;
+//   connection.query(sql, function(err, result){
+//     if(err){
+//       console.log("GET USER ERROR: "+err);
+//     } else {
+//       return result;
+//     }
+//   })
+// };
+
 exports.getAllUsers = function(){
   connection.query('SELECT * FROM ' + dbNames.username, function(err, result){
     if(err){
@@ -51,10 +77,11 @@ exports.getAllUsers = function(){
 
 // Adding a message
 
-exports.addMessage = function(string, userID){
-  connection.query('INSERT INTO '+dbNames.messages+' (username_idusername, text) VALUES ('+userID+', ?)',connection.escape(string),function(result, err){
+exports.addMessage = function(string, userID, roomID){
+  var sql = 'INSERT INTO '+dbNames.messages+' (username_idusername, text, username_roomname_idroomname) VALUES ('+userID+', '+connection.escape(string)+', '+roomID+')';
+  connection.query(sql,function(result, err){
     if (err) {
-      console.log("ERROR: "+err);
+      console.log("ADD MESSAGE ERROR: "+JSON.stringify(err));
     } else {
       console.log('ADDED!!');
     }
@@ -75,5 +102,41 @@ exports.getAllMessages = function(){
 };
 
 // Adding a roomname
+exports.addRoom = function(room){
+  room = connection.escape(room);
+  var sql = 'SELECT * FROM '+dbNames.roomname + ' WHERE name = '+room;
+  console.log("addroom sql ::: ", sql);
+  connection.query(sql,function(err, results){
+    if (err) {
+      console.log("ADD room LOOKUP ERROR: "+err);
+    } else {
+      // return the room
+      if (results.length === 0) {
+        var sql = 'INSERT INTO '+dbNames.roomname+' (name) VALUES ('+room+')';
+        connection.query(sql, function(err, data){
+          if (err) {
+            console.log("INSERT room ERROR: ",err)
+          } else {
+            console.log("room "+room+" added");
+          }
+        })
+      } else {
+        // return exports.getroom(room);
+      }
+    }
+  });
+  // if(connection.query('SELECT ' + user + ' FROM ' + dbNames.username))
+};
 
 // Getting all roomnames
+
+exports.getAllRooms = function(){
+  connection.query('SELECT * FROM ' + dbNames.roomname, function(err, result){
+    if(err){
+      console.log('GET ALL ROOMS ERROR: '+JSON.stringify(err));
+    }else{
+      console.log(result)
+      return result;
+    }
+  });
+};
