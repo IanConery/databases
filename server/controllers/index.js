@@ -1,6 +1,10 @@
 var models = require('../models');
 var bluebird = require('bluebird');
+var db = require('../db');
+var express = require('express');
+
 // this is going to handle the backbone connection to the models
+
 
 
 module.exports = {
@@ -21,9 +25,15 @@ module.exports = {
     get: function (req, res) {
     },
     post: function (req, res) {
-      console.log("USERS POSTTT");
-      console.log('')
+      console.log("Starting user post request...");
+      req.on('data', function(err, data){
+        if(err) console.log("ERROR: "+err);
+        console.log("DATA: ",JSON.stringify(data));
+      })
+      // var message = req.body;
+      // console.log("USERS POST M")
 
+      // console.log("USERS POSTTT");
     }
   }
 };
