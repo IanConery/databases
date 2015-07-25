@@ -1,6 +1,6 @@
 var db = require('../db');
 
-
+// this is going to interact with the database
 
 
 module.exports = {

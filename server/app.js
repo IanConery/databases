@@ -30,3 +30,7 @@ if (!module.parent) {
   console.log("Listening on", app.get("port"));
 }
 
+db.addUser('Ian');
+db.getAllUsers();
+// db.addMessage('Hello!!',1);
+db.getAllMessages();
